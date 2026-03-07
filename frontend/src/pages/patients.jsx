@@ -37,7 +37,6 @@ function PatientsView({ user }) {
     // Fetch patients data
     useEffect(() => {
         const fetchPatients = async () => {
-            setLoading(true);
             try {
                 const response = await patientService.getAllPatients(
                     currentPage,
