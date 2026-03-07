@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Card, message, Layout, Checkbox } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { authService } from '../services/api';
 
 const { Content } = Layout;
