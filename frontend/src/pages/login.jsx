@@ -67,7 +67,7 @@ const Login = () => {
                                 name="password"
                                 rules={[{ required: true, message: 'Password is required' }]}
                             >
-                                <Input.Password placeholder="••••••••" />
+                                <Input.Password placeholder="••••••••" iconRender={() => null} />
                             </Form.Item>
 
                             <Form.Item>
