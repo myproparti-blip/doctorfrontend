@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Table, Modal, Select, Tooltip, Space, message, Badge, Card, Pagination, Row, Col, Statistic } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined, TeamOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined, TeamOutlined } from '@ant-design/icons';
 import { employeeService } from '../services/api';
 import { formatDateFromString } from '../utils/dateHelpers';
 import { getIdFromRecord } from '../utils/idHelpers';
 import { extractEmployeeStats } from '../utils/statsHelpers';
 
 function EmployeesPage() {
-    const [employees, setEmployees] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [employees, setEmployees] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -39,7 +38,6 @@ function EmployeesPage() {
     // Fetch employees data
     useEffect(() => {
         const fetchEmployees = async () => {
-            setLoading(true);
             try {
                 const response = await employeeService.getAllEmployees(
                     currentPage,
@@ -80,8 +78,6 @@ function EmployeesPage() {
             } catch (error) {
                 message.error(error.message || 'Failed to load employees');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

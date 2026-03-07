@@ -6,9 +6,8 @@ import { invoiceService } from '../services/api';
 import { formatDateFromString } from '../utils/dateHelpers';
 
 function InvoicesView() {
-    const [invoices, setInvoices] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [invoices, setInvoices] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -36,7 +35,6 @@ function InvoicesView() {
     // Fetch invoices data
      useEffect(() => {
          const fetchInvoices = async () => {
-             setLoading(true);
              try {
                  const response = await invoiceService.getAllInvoices(
                      currentPage,
@@ -76,8 +74,6 @@ function InvoicesView() {
             } catch (error) {
                 message.error(error.message || 'Failed to load invoices');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

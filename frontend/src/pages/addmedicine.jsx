@@ -13,9 +13,7 @@ const AddMedicine = () => {
     const { id: medicineId } = useParams();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [fetchLoading, setFetchLoading] = useState(false);
     const isEditMode = location.state?.isEdit || !!medicineId;
-    const medicineData = location.state?.medicineData;
 
     const categories = [
         'Antibiotic',
@@ -34,7 +32,6 @@ const AddMedicine = () => {
     useEffect(() => {
         if (isEditMode && medicineId) {
             const fetchMedicine = async () => {
-                setFetchLoading(true);
                 try {
                     console.log('Fetching medicine with ID:', medicineId);
                     const response = await medicineService.getMedicineById(medicineId);
@@ -68,8 +65,6 @@ const AddMedicine = () => {
                 } catch (error) {
                     message.error('Failed to load medicine details');
                     console.error('Error fetching medicine:', error);
-                } finally {
-                    setFetchLoading(false);
                 }
             };
             fetchMedicine();

@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Dropdown, message, Avatar } from 'antd';
+import { Dropdown, message, Avatar } from 'antd';
 import { UserOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { authService } from '../services/api';
 

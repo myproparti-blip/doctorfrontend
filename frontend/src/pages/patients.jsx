@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Table, Modal, Select, Tooltip, Space, message, Badge, Card, Pagination, Row, Col, Statistic } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, FileTextOutlined, UserOutlined, CheckCircleOutlined, StopOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, FileTextOutlined, UserOutlined, CheckCircleOutlined, StopOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
 import { patientService } from '../services/api';
 import { formatDateFromString, formatDateISO } from '../utils/dateHelpers';
 import { getIdFromRecord } from '../utils/idHelpers';
 import { extractPatientStats } from '../utils/statsHelpers';
 
 function PatientsView({ user }) {
-    const [patients, setPatients] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [patients, setPatients] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -66,8 +65,6 @@ function PatientsView({ user }) {
             } catch (error) {
                 message.error(error.message || 'Failed to load patients');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

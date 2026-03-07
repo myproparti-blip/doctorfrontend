@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Table, Modal, Select, Tooltip, Space, message, Badge, Card, Pagination, Row, Col, Statistic } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, PlusOutlined, AlertOutlined, CheckCircleOutlined, ClockCircleOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, AlertOutlined, CheckCircleOutlined, ClockCircleOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { medicineService } from '../services/api';
 import { formatDateFromString } from '../utils/dateHelpers';
 import { getIdFromRecord } from '../utils/idHelpers';
 
 function MedicinesView() {
-    const [medicines, setMedicines] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [medicines, setMedicines] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -37,10 +36,9 @@ function MedicinesView() {
     }, [searchTerm]);
 
     // Fetch medicines data
-     useEffect(() => {
-         const fetchMedicines = async () => {
-             setLoading(true);
-             try {
+    useEffect(() => {
+        const fetchMedicines = async () => {
+            try {
                  const response = await medicineService.getAllMedicines(
                      currentPage,
                      itemsPerPage,
@@ -73,8 +71,6 @@ function MedicinesView() {
             } catch (error) {
                 message.error(error.message || 'Failed to load medicines');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

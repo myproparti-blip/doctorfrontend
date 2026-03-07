@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, Table, Button, Input, Select, Tooltip, Space, message, Tag, Modal, Layout, Row, Col, Statistic } from 'antd';
-import { EditOutlined, DeleteOutlined, SearchOutlined, PlusOutlined, CheckCircleOutlined, HourglassOutlined, FileTextOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, HourglassOutlined, FileTextOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { labService } from '../services/api';
 import { formatDateISO } from '../utils/dateHelpers';
 import { getIdFromRecord } from '../utils/idHelpers';
@@ -18,7 +18,6 @@ const LabsPage = () => {
     const patientData = location.state?.patientData;
     const [user, setUser] = useState(null);
     const [labs, setLabs] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [refetchTrigger, setRefetchTrigger] = useState(0);
@@ -30,7 +29,6 @@ const LabsPage = () => {
     });
 
     const fetchPatientLabs = useCallback(async (filterStatus = statusFilter) => {
-        setLoading(true);
         try {
             const result = await labService.getLabsByPatient(patientId, 1, 100, filterStatus);
             let labData = [];
@@ -67,9 +65,7 @@ const LabsPage = () => {
             if (error.status !== 429) {
                 message.error(error.message || 'Failed to load labs');
             }
-        } finally {
-            setLoading(false);
-        }
+            }
     }, [patientId, statusFilter]);
 
     useEffect(() => {

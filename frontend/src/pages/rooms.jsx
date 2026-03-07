@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Table, Modal, Select, Tooltip, Space, message, Badge, Card, Pagination, Row, Col, Statistic, Dropdown } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import { roomService } from '../services/api';
-import { formatDateFromString, formatDateISO } from '../utils/dateHelpers';
+import { formatDateFromString } from '../utils/dateHelpers';
 import { getIdFromRecord } from '../utils/idHelpers';
 
 function RoomsView() {
-    const [rooms, setRooms] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [rooms, setRooms] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -37,7 +36,6 @@ function RoomsView() {
     // Fetch rooms data
     useEffect(() => {
         const fetchRooms = async () => {
-            setLoading(true);
             try {
                 const response = await roomService.getAllRooms(
                     currentPage,
@@ -53,7 +51,7 @@ function RoomsView() {
                 // Calculate stats on first page load
                 if (currentPage === 1 && statusFilter === 'all' && !debouncedSearch) {
                     try {
-                        const statsResponse = await roomService.getRoomOccupancyReport();
+                        await roomService.getRoomOccupancyReport();
                         const roomsData = response.data || [];
                         
                         const stats = {
@@ -78,8 +76,6 @@ function RoomsView() {
             } catch (error) {
                 message.error(error.message || 'Failed to load rooms');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

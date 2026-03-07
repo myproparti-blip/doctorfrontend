@@ -6,9 +6,8 @@ import { leaveService } from '../services/api';
 import { formatDateFromString } from '../utils/dateHelpers';
 
 function LeavesView() {
-    const [leaves, setLeaves] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+     const [leaves, setLeaves] = useState([]);
+     const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -34,10 +33,9 @@ function LeavesView() {
     }, [searchTerm]);
 
     // Fetch leaves data
-     useEffect(() => {
-         const fetchLeaves = async () => {
-             setLoading(true);
-             try {
+    useEffect(() => {
+        const fetchLeaves = async () => {
+            try {
                  const response = await leaveService.getAllLeaves(
                      currentPage,
                      itemsPerPage,
@@ -61,8 +59,6 @@ function LeavesView() {
             } catch (error) {
                 message.error(error.message || 'Failed to load leaves');
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 
