@@ -13,24 +13,24 @@ export const getIdFromRecord = (record) => {
     }
 
     const id = record._id;
-    ('Extracting ID from:', id, 'Type:', typeof id);
+    console.log('Extracting ID from:', id, 'Type:', typeof id);
 
     // If it's already a string, return it
     if (typeof id === 'string') {
-        ('ID is string:', id);
+        console.log('ID is string:', id);
         return id;
     }
 
     // If it's an object with $oid (MongoDB Extended JSON format)
     if (id && typeof id === 'object' && id.$oid) {
-        ('ID has $oid:', id.$oid);
+        console.log('ID has $oid:', id.$oid);
         return id.$oid;
     }
 
     // Try to convert to string
     const idStr = String(id);
     if (idStr && idStr !== '[object Object]') {
-        ('ID converted to string:', idStr);
+        console.log('ID converted to string:', idStr);
         return idStr;
     }
 

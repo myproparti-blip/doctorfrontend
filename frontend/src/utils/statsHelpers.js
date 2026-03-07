@@ -38,12 +38,12 @@ export const extractEmployeeStats = (response) => {
         return null;
     }
 
-    ('DEBUG - Employee stats response:', JSON.stringify(response, null, 2));
+    console.log('DEBUG - Employee stats response:', JSON.stringify(response, null, 2));
 
     // API returns: { success: true, data: { total, active, inactive, byDepartment, ... } }
     const data = response.data || response;
 
-    ('DEBUG - Extracted data:', JSON.stringify(data, null, 2));
+    console.log('DEBUG - Extracted data:', JSON.stringify(data, null, 2));
 
     const result = {
         total: Number(data.total) || 0,
@@ -51,7 +51,7 @@ export const extractEmployeeStats = (response) => {
         inactive: Number(data.inactive) || 0,
     };
     
-    ('DEBUG - Final employee stats:', result);
+    console.log('DEBUG - Final employee stats:', result);
     return result;
 };
 
@@ -61,12 +61,12 @@ export const extractLabStats = (response) => {
         return null;
     }
 
-    ('DEBUG - Lab stats response:', JSON.stringify(response, null, 2));
+    console.log('DEBUG - Lab stats response:', JSON.stringify(response, null, 2));
 
     // API returns: { success: true, data: { totalTests, pendingTests, completedTests, ... } }
     const data = response.data || response;
 
-    ('DEBUG - Lab stats data:', JSON.stringify(data, null, 2));
+    console.log('DEBUG - Lab stats data:', JSON.stringify(data, null, 2));
 
     const result = {
         total: Number(data.totalTests) || 0,
@@ -74,7 +74,7 @@ export const extractLabStats = (response) => {
         completed: Number(data.completedTests) || 0,
     };
     
-    ('DEBUG - Final lab stats:', result);
+    console.log('DEBUG - Final lab stats:', result);
     return result;
 };
 
