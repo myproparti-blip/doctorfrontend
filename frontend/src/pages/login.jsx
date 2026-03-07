@@ -59,7 +59,7 @@ const Login = () => {
                                     { type: 'email', message: 'Please enter a valid email' },
                                 ]}
                             >
-                                <Input placeholder="doctor@example.com" prefix={<MailOutlined />} />
+                                <Input placeholder="doctor@example.com" />
                             </Form.Item>
 
                             <Form.Item
@@ -67,7 +67,7 @@ const Login = () => {
                                 name="password"
                                 rules={[{ required: true, message: 'Password is required' }]}
                             >
-                                <Input.Password placeholder="••••••••" prefix={<LockOutlined />} />
+                                <Input.Password placeholder="••••••••" />
                             </Form.Item>
 
                             <Form.Item>
