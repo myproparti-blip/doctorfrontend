@@ -251,23 +251,23 @@ const AddPatient = () => {
                 <Card loading={formLoading}>
                     <Form form={form} layout="vertical" onFinish={handleSubmit} disabled={formLoading}>
                         <h3 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '500' }}>Personal Information</h3>
-                        <Row gutter={16}>
-                            <Col xs={24} sm={12} lg={6}>
+                        <Row gutter={[16, 0]}>
+                            <Col xs={24} sm={12} md={12} lg={6}>
                                 <Form.Item label="Full Name" name="name" rules={[{ required: true, message: 'Name is required' }]}>
                                     <Input placeholder="Dr. James Wilson" />
                                 </Form.Item>
                             </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Age" name="age" rules={[{ required: true, message: 'Age is required' }]}>
-                                    <InputNumber min={0} max={120} style={{ width: '100%' }} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email', message: 'Valid email is required' }]}>
-                                    <Input placeholder="doctor@example.com" />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
+                            <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Age" name="age" rules={[{ required: true, message: 'Age is required' }]}>
+                                     <InputNumber min={0} max={120} style={{ width: '100%' }} />
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email', message: 'Valid email is required' }]}>
+                                     <Input placeholder="doctor@example.com" />
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
                                 <Form.Item label="Phone" name="phone" rules={[{ required: true, message: 'Phone is required' }]}>
                                     <Input placeholder="+1 (555) 123-4567" />
                                 </Form.Item>
@@ -275,51 +275,51 @@ const AddPatient = () => {
                         </Row>
 
                         <h3 style={{ marginTop: '24px', marginBottom: '16px', fontSize: '16px', fontWeight: '500' }}>Address</h3>
-                        <Row gutter={16}>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Street Address" name="street">
-                                    <Input placeholder="123 Main Street" />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="State/Province" name="state">
-                                    <Select
-                                        placeholder="Select State"
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                        options={Object.keys(indianStatesAndCities).map((state) => ({
-                                            label: state,
-                                            value: state,
-                                        }))}
-                                        onChange={(value) => {
-                                            setSelectedState(value);
-                                            form.setFieldValue('city', undefined);
-                                        }}
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="City" name="city">
-                                    <Select
-                                        placeholder="Select City"
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                        disabled={!selectedState}
-                                        options={selectedState
-                                            ? indianStatesAndCities[selectedState].map((city) => ({
-                                                label: city,
-                                                value: city,
-                                            }))
-                                            : []
-                                        }
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
+                        <Row gutter={[16, 0]}>
+                            <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Street Address" name="street">
+                                     <Input placeholder="123 Main Street" />
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="State/Province" name="state">
+                                     <Select
+                                         placeholder="Select State"
+                                         showSearch
+                                         filterOption={(input, option) =>
+                                             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                         }
+                                         options={Object.keys(indianStatesAndCities).map((state) => ({
+                                             label: state,
+                                             value: state,
+                                         }))}
+                                         onChange={(value) => {
+                                             setSelectedState(value);
+                                             form.setFieldValue('city', undefined);
+                                         }}
+                                     />
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="City" name="city">
+                                     <Select
+                                         placeholder="Select City"
+                                         showSearch
+                                         filterOption={(input, option) =>
+                                             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                         }
+                                         disabled={!selectedState}
+                                         options={selectedState
+                                             ? indianStatesAndCities[selectedState].map((city) => ({
+                                                 label: city,
+                                                 value: city,
+                                             }))
+                                             : []
+                                         }
+                                     />
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
                                 <Form.Item label="Postal Code" name="postalCode">
                                     <Input placeholder="400001" />
                                 </Form.Item>
@@ -327,30 +327,30 @@ const AddPatient = () => {
                         </Row>
 
                         <h3 style={{ marginTop: '24px', marginBottom: '16px', fontSize: '16px', fontWeight: '500' }}>Medical Information</h3>
-                        <Row gutter={16}>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Blood Type" name="bloodType">
-                                    <Select placeholder="Select blood type">
-                                        {bloodTypes.map((type) => (
-                                            <Select.Option key={type} value={type}>
-                                                {type}
-                                            </Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Medical Condition" name="condition" rules={[{ required: true, message: 'Condition is required' }]}>
-                                    <Select placeholder="Select condition">
-                                        {conditions.map((cond) => (
-                                            <Select.Option key={cond} value={cond}>
-                                                {cond}
-                                            </Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={12} lg={6}>
+                        <Row gutter={[16, 0]}>
+                            <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Blood Type" name="bloodType">
+                                     <Select placeholder="Select blood type">
+                                         {bloodTypes.map((type) => (
+                                             <Select.Option key={type} value={type}>
+                                                 {type}
+                                             </Select.Option>
+                                         ))}
+                                     </Select>
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Medical Condition" name="condition" rules={[{ required: true, message: 'Condition is required' }]}>
+                                     <Select placeholder="Select condition">
+                                         {conditions.map((cond) => (
+                                             <Select.Option key={cond} value={cond}>
+                                                 {cond}
+                                             </Select.Option>
+                                         ))}
+                                     </Select>
+                                 </Form.Item>
+                             </Col>
+                             <Col xs={24} sm={12} md={12} lg={6}>
                                 <Form.Item label="Risk Level" name="risk">
                                     <Select placeholder="Select risk level">
                                         {riskLevels.map((risk) => (
@@ -361,29 +361,29 @@ const AddPatient = () => {
                                     </Select>
                                 </Form.Item>
                             </Col>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Status" name="status" initialValue="active">
-                                    <Select placeholder="Select status">
-                                        {statusOptions.map((stat) => (
-                                            <Select.Option key={stat} value={stat}>
-                                                {stat === 'active' ? 'Active' : stat === 'inactive' ? 'Inactive' : 'Discharged'}
-                                            </Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                            <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Status" name="status" initialValue="active">
+                                     <Select placeholder="Select status">
+                                         {statusOptions.map((stat) => (
+                                             <Select.Option key={stat} value={stat}>
+                                                 {stat === 'active' ? 'Active' : stat === 'inactive' ? 'Inactive' : 'Discharged'}
+                                             </Select.Option>
+                                         ))}
+                                     </Select>
+                                 </Form.Item>
+                             </Col>
+                            </Row>
 
-                        <Row gutter={16}>
-                            <Col xs={24} sm={12} lg={6}>
-                                <Form.Item label="Health Score (0-10)" name="healthScore">
-                                    <InputNumber min={0} max={10} style={{ width: '100%' }} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                            <Row gutter={[16, 0]}>
+                             <Col xs={24} sm={12} md={12} lg={6}>
+                                 <Form.Item label="Health Score (0-10)" name="healthScore">
+                                     <InputNumber min={0} max={10} style={{ width: '100%' }} />
+                                 </Form.Item>
+                             </Col>
+                            </Row>
 
-                        <Row gutter={16}>
-                            <Col xs={24} sm={12} lg={6}>
+                            <Row gutter={[16, 0]}>
+                             <Col xs={24} sm={12} md={12} lg={6}>
                                 <Form.Item label="Join Date" name="joinDate">
                                     <DatePicker
                                         style={{ width: '100%' }}

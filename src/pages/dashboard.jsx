@@ -289,7 +289,12 @@ const Dashboard = () => {
         {/* Combined Charts Card */}
         <Col xs={24}>
           <div className="analytics-card">
-            <div style={{ display: 'grid', gridTemplateColumns: '2.5fr 1fr', gap: '48px', alignItems: 'flex-start' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '2.5fr 1fr', 
+              gap: '48px', 
+              alignItems: 'flex-start' 
+            }}>
               {/* Left: Patients Activity Chart */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>

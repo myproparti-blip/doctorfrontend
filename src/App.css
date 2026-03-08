@@ -310,6 +310,65 @@
   .ant-table {
     min-width: 500px;
   }
+
+  /* Mobile Layout Header */
+  .ant-layout-header {
+    padding: 0 12px !important;
+    height: 56px !important;
+  }
+
+  /* Mobile Content */
+  .ant-layout-content {
+    padding: 12px 16px !important;
+  }
+
+  /* Analytics Card Grid Layout for Mobile */
+  .analytics-card {
+    display: block !important;
+  }
+
+  .analytics-card > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  /* Mobile Stat Card Grid */
+  .stat-card-active {
+    margin-bottom: 12px !important;
+  }
+
+  /* Recharts ResponsiveContainer - reduce height on mobile */
+  .recharts-responsive-container {
+    height: 280px !important;
+  }
+
+  /* Mobile Form Cols - stack vertically */
+  .ant-col {
+    margin-bottom: 0 !important;
+  }
+
+  /* Mobile Pagination */
+  .ant-pagination {
+    margin-top: 16px;
+  }
+
+  .ant-pagination-item {
+    min-width: 28px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    font-size: 11px !important;
+  }
+
+  /* Mobile Menu */
+  .ant-menu {
+    padding: 8px 0 !important;
+  }
+
+  .ant-menu-item {
+    padding-left: 16px !important;
+    font-size: 13px !important;
+  }
 }
 
 @media (min-width: 769px) {
@@ -338,5 +397,35 @@
   * {
     max-width: 100%;
     box-sizing: border-box;
+  }
+
+  /* Extra small screens */
+  .ant-layout-header {
+    height: 56px !important;
+    padding: 0 8px !important;
+  }
+
+  .ant-layout-content {
+    padding: 8px 12px !important;
+  }
+
+  h1 {
+    font-size: 16px !important;
+  }
+
+  h2 {
+    font-size: 14px !important;
+  }
+
+  h3 {
+    font-size: 13px !important;
+  }
+
+  .ant-statistic-content {
+    font-size: 18px !important;
+  }
+
+  .recharts-responsive-container {
+    height: 200px !important;
   }
 }
