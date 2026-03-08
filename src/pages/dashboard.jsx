@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Row, Col, Card, Button, Table, Statistic, Calendar, Input, Select, Pagination, Badge, Space, Tooltip, message, Modal } from 'antd';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area, Legend, BarChart, Bar } from 'recharts';
-import { defs, linearGradient, stop } from 'recharts';
-import { ArrowRightOutlined, PlusOutlined, EditOutlined, DeleteOutlined, FileTextOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Button, Table, Input, Select, Pagination, Badge, Space, Tooltip, message, Modal } from 'antd';
+import { XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { PlusOutlined, EditOutlined, DeleteOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { patientService } from '../services/api';
 import { formatDateFromString, formatDateISO } from '../utils/dateHelpers';
@@ -12,7 +11,6 @@ import './dashboard.css';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [patientsData, setPatientsData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,7 +59,6 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        setLoading(true);
         const response = await patientService.getAllPatients(
           currentPage,
           itemsPerPage,
@@ -74,8 +71,6 @@ const Dashboard = () => {
       } catch (error) {
         message.error(error.message || 'Failed to load patients');
         console.error(error);
-      } finally {
-        setLoading(false);
       }
     };
 
