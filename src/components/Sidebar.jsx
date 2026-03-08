@@ -87,7 +87,6 @@ const Sidebar = ({ collapsed = false, onCollapse = () => {}, isMobile = false })
 
     const headerHeight = isMobile ? '56px' : '64px';
     const sidebarWidth = isMobile ? 0 : 200;
-    const sidebarDisplay = isMobile && collapsed ? 'none' : 'block';
 
     return (
         <Sider
