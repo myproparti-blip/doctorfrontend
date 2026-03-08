@@ -343,15 +343,6 @@ function LeavesView() {
                                         }}
                                     />
                                 </Tooltip>
-                                <Tooltip title="Edit Leave">
-                                    <Button
-                                        type="text"
-                                        icon={<EditOutlined />}
-                                        size="small"
-                                        style={{ fontSize: '16px' }}
-                                        onClick={handleEditClick}
-                                    />
-                                </Tooltip>
                                 <Tooltip title="Delete Leave">
                                     <Button
                                         type="text"
