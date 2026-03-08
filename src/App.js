@@ -79,6 +79,7 @@ function App() {
 function DashboardLayout() {
     const [user, setUser] = useState(null);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -95,11 +96,28 @@ function DashboardLayout() {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (mobile) {
+                setSidebarCollapsed(true);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const headerPadding = isMobile ? '0 12px' : '0 24px';
+    const headerHeight = isMobile ? '56px' : '64px';
+    const marginLeft = isMobile ? 0 : (sidebarCollapsed ? '80px' : '200px');
+
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
             <Layout.Header style={{ 
                 background: '#ffffff', 
-                padding: '0 24px', 
+                padding: headerPadding, 
                 boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
                 position: 'fixed',
                 top: 0,
@@ -110,22 +128,23 @@ function DashboardLayout() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                height: headerHeight,
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px' }}>
                     <Button
                         type="text"
                         icon={sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                        style={{ fontSize: '18px', color: '#0066cc' }}
+                        style={{ fontSize: isMobile ? '16px' : '18px', color: '#0066cc' }}
                     />
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#0066cc' }}>MediCare</div>
+                    <div style={{ fontSize: isMobile ? '16px' : '20px', fontWeight: '700', color: '#0066cc', whiteSpace: 'nowrap' }}>MediCare</div>
                 </div>
-                <AppHeader selectedMenuId="0" user={user} />
+                <AppHeader selectedMenuId="0" user={user} isMobile={isMobile} />
             </Layout.Header>
 
-            <Layout style={{ marginTop: '64px', marginLeft: sidebarCollapsed ? '80px' : '200px', transition: 'margin-left 0.2s' }}>
-                <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
-                <Layout.Content style={{ padding: '16px 20px', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
+            <Layout style={{ marginTop: headerHeight, marginLeft: marginLeft, transition: 'margin-left 0.2s' }}>
+                <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} isMobile={isMobile} />
+                <Layout.Content style={{ padding: isMobile ? '12px 16px' : '16px 20px', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
                     <div style={{ width: '100%' }}>
                         <Dashboard user={user} />
                     </div>
@@ -139,6 +158,7 @@ function MainApp({ selectedMenuId = '1' }) {
     const [selectedMenu, setSelectedMenu] = useState(selectedMenuId);
     const [user, setUser] = useState(null);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -154,6 +174,19 @@ function MainApp({ selectedMenuId = '1' }) {
             navigate('/login', { replace: true });
         }
     }, [navigate]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (mobile) {
+                setSidebarCollapsed(true);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Update selected menu when route changes
     useEffect(() => {
@@ -177,11 +210,15 @@ function MainApp({ selectedMenuId = '1' }) {
         return <PatientsView user={user} />;
     }, [selectedMenu, user]);
 
+    const headerPadding = isMobile ? '0 12px' : '0 24px';
+    const headerHeight = isMobile ? '56px' : '64px';
+    const marginLeft = isMobile ? 0 : (sidebarCollapsed ? '80px' : '200px');
+
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
             <Layout.Header style={{ 
                 background: '#ffffff', 
-                padding: '0 24px', 
+                padding: headerPadding, 
                 boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
                 position: 'fixed',
                 top: 0,
@@ -192,22 +229,23 @@ function MainApp({ selectedMenuId = '1' }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                height: headerHeight,
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px' }}>
                     <Button
                         type="text"
                         icon={sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                        style={{ fontSize: '18px', color: '#0066cc' }}
+                        style={{ fontSize: isMobile ? '16px' : '18px', color: '#0066cc' }}
                     />
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#0066cc' }}>MediCare</div>
+                    <div style={{ fontSize: isMobile ? '16px' : '20px', fontWeight: '700', color: '#0066cc', whiteSpace: 'nowrap' }}>MediCare</div>
                 </div>
-                <AppHeader selectedMenuId={selectedMenu} user={user} />
+                <AppHeader selectedMenuId={selectedMenu} user={user} isMobile={isMobile} />
             </Layout.Header>
 
-            <Layout style={{ marginTop: '64px', marginLeft: sidebarCollapsed ? '80px' : '200px', transition: 'margin-left 0.2s' }}>
-                <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} />
-                <Layout.Content style={{ padding: '16px 20px', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
+            <Layout style={{ marginTop: headerHeight, marginLeft: marginLeft, transition: 'margin-left 0.2s' }}>
+                <Sidebar collapsed={sidebarCollapsed} onCollapse={setSidebarCollapsed} isMobile={isMobile} />
+                <Layout.Content style={{ padding: isMobile ? '12px 16px' : '16px 20px', background: 'linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)' }}>
                     <div style={{ width: '100%' }}>
                         {renderContent}
                     </div>

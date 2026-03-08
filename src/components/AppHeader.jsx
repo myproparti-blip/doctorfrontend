@@ -4,7 +4,7 @@ import { Dropdown, message, Avatar } from 'antd';
 import { UserOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { authService } from '../services/api';
 
-const AppHeader = ({ selectedMenuId = '1', user = null }) => {
+const AppHeader = ({ selectedMenuId = '1', user = null, isMobile = false }) => {
     const navigate = useNavigate();
 
     const handleLogout = useCallback(async () => {
@@ -39,11 +39,14 @@ const AppHeader = ({ selectedMenuId = '1', user = null }) => {
         },
     ], [user?.name, handleLogout]);
 
+    const avatarSize = isMobile ? 32 : 40;
+    const iconFontSize = isMobile ? '16px' : '20px';
+
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: 'auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px', marginLeft: 'auto' }}>
             <Dropdown menu={{ items: userMenuItems }} trigger={['click']}>
                 <Avatar
-                    size={40}
+                    size={avatarSize}
                     style={{
                         backgroundColor: '#0066cc',
                         cursor: 'pointer',
@@ -52,7 +55,7 @@ const AppHeader = ({ selectedMenuId = '1', user = null }) => {
                         justifyContent: 'center',
                         fontWeight: '600',
                     }}
-                    icon={<UserOutlined style={{ fontSize: '20px' }} />}
+                    icon={<UserOutlined style={{ fontSize: iconFontSize }} />}
                 />
             </Dropdown>
         </div>
