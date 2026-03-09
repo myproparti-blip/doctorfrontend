@@ -2,12 +2,13 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Table, Modal, Select, Tooltip, Space, message, Badge, Card, Pagination, Row, Col, Statistic, Dropdown } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
-import { roomService } from '../services/api';
+import { roomService, patientService } from '../services/api';
 import { getIdFromRecord } from '../utils/idHelpers';
 
 function RoomsView() {
-     const [rooms, setRooms] = useState([]);
-     const [currentPage, setCurrentPage] = useState(1);
+    const [rooms, setRooms] = useState([]);
+    const [patients, setPatients] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -21,6 +22,20 @@ function RoomsView() {
         maintenance: 0,
     });
     const navigate = useNavigate();
+
+    // Fetch patients
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const response = await patientService.getAllPatients(1, 1000);
+                const patientList = response.data || [];
+                setPatients(patientList);
+            } catch (error) {
+                console.error('Failed to load patients:', error);
+            }
+        };
+        fetchPatients();
+    }, []);
 
     // Debounce search
     useEffect(() => {
@@ -52,14 +67,14 @@ function RoomsView() {
                     try {
                         await roomService.getRoomOccupancyReport();
                         const roomsData = response.data || [];
-                        
+
                         const stats = {
                             total: roomsData.length,
                             available: roomsData.filter(r => r.status === 'available').length,
                             occupied: roomsData.filter(r => r.status === 'occupied').length,
                             maintenance: roomsData.filter(r => r.status === 'maintenance').length,
                         };
-                        
+
                         setRoomStats(stats);
                     } catch (error) {
                         console.error('Error fetching room stats:', error);
@@ -132,16 +147,16 @@ function RoomsView() {
                 try {
                     await roomService.updateRoomStatus(String(roomId).trim(), newStatus);
                     message.success(`Room status updated to ${statusLabels[newStatus]}`);
-                    
+
                     // Update room status in local state immediately
-                    setRooms(prevRooms => 
-                        prevRooms.map(room => 
-                            getIdFromRecord(room) === String(roomId).trim() 
+                    setRooms(prevRooms =>
+                        prevRooms.map(room =>
+                            getIdFromRecord(room) === String(roomId).trim()
                                 ? { ...room, status: newStatus }
                                 : room
                         )
                     );
-                    
+
                     // Also refetch to ensure data is fresh
                     setRefetchTrigger(prev => prev + 1);
                 } catch (error) {
@@ -164,9 +179,32 @@ function RoomsView() {
         { title: 'Floor', dataIndex: 'floor', key: 'floor', width: 80 },
         { title: 'Bed Capacity', dataIndex: 'bedCapacity', key: 'bedCapacity', width: 110 },
         { title: 'Beds Occupied', dataIndex: 'bedsOccupied', key: 'bedsOccupied', width: 110 },
-        { 
-            title: 'Cost/Day', 
-            dataIndex: 'costPerDay', 
+        {
+            title: 'Patient Name',
+            key: 'patientName',
+            width: 150,
+            render: (_, record) => {
+                if (!record.assignedPatients || record.assignedPatients.length === 0) {
+                    return <span style={{ color: '#999' }}>-</span>;
+                }
+                return (
+                    <div>
+                        {record.assignedPatients.map((ap, index) => {
+                            const patientId = typeof ap.patientId === 'string' ? ap.patientId : ap.patientId?._id;
+                            const patient = patients.find(p => p._id === patientId);
+                            return (
+                                <div key={index} style={{ marginBottom: index < record.assignedPatients.length - 1 ? '4px' : '0' }}>
+                                    {patient?.name || 'N/A'}
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Cost/Day',
+            dataIndex: 'costPerDay',
             key: 'costPerDay',
             width: 100,
             render: (cost) => `₹${cost || 0}`,
@@ -180,7 +218,7 @@ function RoomsView() {
                 let color = 'red';
                 let text = 'Closed';
                 let icon = <CloseCircleOutlined />;
-                
+
                 if (status === 'available') {
                     color = 'green';
                     text = 'Available';
@@ -192,7 +230,7 @@ function RoomsView() {
                     color = 'blue';
                     text = 'Maintenance';
                 }
-                
+
                 return <Badge icon={icon} color={color} text={text} />;
             },
         },
@@ -202,7 +240,7 @@ function RoomsView() {
             width: 120,
             render: (_, record) => {
                 const roomId = getIdFromRecord(record);
-                
+
                 const statusMenuItems = [
                     {
                         key: 'available',
@@ -234,59 +272,59 @@ function RoomsView() {
                 ];
 
                 const handleEditClick = () => {
-                     if (!roomId) {
-                         message.error('Room ID not found');
-                         return;
-                     }
-                     navigate(`/addrooms/${roomId}`, { state: { isEdit: true, roomData: record } });
-                 };
+                    if (!roomId) {
+                        message.error('Room ID not found');
+                        return;
+                    }
+                    navigate(`/addrooms/${roomId}`, { state: { isEdit: true, roomData: record } });
+                };
 
-                 const handleDeleteClick = () => {
-                     if (!roomId) {
-                         message.error('Room ID not found');
-                         return;
-                     }
-                     handleDeleteRoom(roomId);
-                 };
+                const handleDeleteClick = () => {
+                    if (!roomId) {
+                        message.error('Room ID not found');
+                        return;
+                    }
+                    handleDeleteRoom(roomId);
+                };
 
-                 return (
-                      <Space size="small">
-                          <Tooltip title="Edit">
-                              <Button
-                                  type="text"
-                                  icon={<EditOutlined />}
-                                  size="small"
-                                  onClick={handleEditClick}
-                              />
-                          </Tooltip>
-                          <Tooltip title="Change Status">
-                              <Dropdown
-                                  menu={{ items: statusMenuItems }}
-                                  placement="bottomRight"
-                              >
-                                  <Button
-                                      type="text"
-                                      icon={<SwapOutlined />}
-                                      size="small"
-                                      disabled={record.status === 'occupied'}
-                                  />
-                              </Dropdown>
-                          </Tooltip>
-                         <Tooltip title="Delete">
-                             <Button
-                                 type="text"
-                                 danger
-                                 icon={<DeleteOutlined />}
-                                 size="small"
-                                 onClick={handleDeleteClick}
-                                 disabled={record.bedsOccupied > 0}
-                             />
-                         </Tooltip>
-                     </Space>
-                 );
+                return (
+                    <Space size="small">
+                        <Tooltip title="Edit">
+                            <Button
+                                type="text"
+                                icon={<EditOutlined />}
+                                size="small"
+                                onClick={handleEditClick}
+                            />
+                        </Tooltip>
+                        <Tooltip title="Change Status">
+                            <Dropdown
+                                menu={{ items: statusMenuItems }}
+                                placement="bottomRight"
+                            >
+                                <Button
+                                    type="text"
+                                    icon={<SwapOutlined />}
+                                    size="small"
+                                    disabled={record.status === 'occupied'}
+                                />
+                            </Dropdown>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                            <Button
+                                type="text"
+                                danger
+                                icon={<DeleteOutlined />}
+                                size="small"
+                                onClick={handleDeleteClick}
+                                disabled={record.bedsOccupied > 0}
+                            />
+                        </Tooltip>
+                    </Space>
+                );
             },
         },
-    ], [navigate, currentPage, itemsPerPage, handleDeleteRoom, handleStatusChange]);
+    ], [navigate, currentPage, itemsPerPage, handleDeleteRoom, handleStatusChange, patients]);
 
     return (
         <>
@@ -401,12 +439,12 @@ function RoomsView() {
                     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '16px', fontWeight: '600', color: '#000' }}>Rooms</span>
                         <Input
-                             placeholder="Search rooms..."
-                             value={searchTerm}
-                             onChange={(e) => setSearchTerm(e.target.value)}
-                             size="small"
-                             style={{ width: '200px' }}
-                         />
+                            placeholder="Search rooms..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            size="small"
+                            style={{ width: '200px' }}
+                        />
                         <Select
                             placeholder="Filter by status"
                             value={statusFilter}
@@ -443,7 +481,7 @@ function RoomsView() {
                     rowKey="_id"
                     pagination={false}
                     style={{ marginBottom: '16px' }}
-                    scroll={{ x: 1200 }}
+                    scroll={{ x: 1400 }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
                     <Pagination
