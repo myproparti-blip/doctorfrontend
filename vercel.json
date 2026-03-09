@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm install && npm run build",
+  "buildCommand": "npm install --no-save react-app-rewired && npm run build",
   "outputDirectory": "build",
   "env": {
     "CI": "true"
